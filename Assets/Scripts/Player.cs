@@ -11,13 +11,15 @@ public class Player : MonoBehaviour
     private float moveInput;
     private Rigidbody2D rb2d;
 
+    public int maxJumpCount = 1;
+    private int jumpCount = 0;
 
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         Anim = GetComponent<Animator>();
-    }// Start
-    
+    }
+
     void Update()
     {
         PlayerController();
@@ -26,15 +28,15 @@ public class Player : MonoBehaviour
         // เคลื่อนที่ซ้าย-ขวา
         rb2d.linearVelocity = new Vector2(moveInput * speed, rb2d.linearVelocity.y);
 
-        if (Input.GetButtonDown("Jump") && !isJumping)
+        if (Input.GetButtonDown("Jump") && jumpCount < maxJumpCount)
         {
-            rb2d.AddForce(new Vector2(rb2d.linearVelocity.x, jumpForce));
+            rb2d.AddForce(new Vector2(0f, jumpForce));
+            jumpCount++;
+            isJumping = true;
+        }
+    }
 
-        }//Jump
-
-    }// Update
-
-      void PlayerController()
+    void PlayerController()
     {
         moveX = Input.GetAxisRaw("Horizontal");
         rb2d.linearVelocity = new Vector2(moveX * speed, rb2d.linearVelocity.y);
@@ -58,5 +60,12 @@ public class Player : MonoBehaviour
         transform.localScale = localscale;
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isJumping = false;
+            jumpCount = 0;
+        }
+    }
 }
-
