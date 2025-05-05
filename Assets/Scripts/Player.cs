@@ -83,7 +83,6 @@ public class Player : MonoBehaviour
         if (playerHealth <= 0)
         {
             Debug.Log("Player is dead!");
-            Application.Quit();
         }
     }
 }
