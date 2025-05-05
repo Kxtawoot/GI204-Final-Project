@@ -14,11 +14,26 @@ public class Player : MonoBehaviour
     public int maxJumpCount = 1;
     private int jumpCount = 0;
     private float moveInput;
+    public UIManager uiManager; 
+    private int collectedKeys = 0; 
+    public int totalKeys = 1; 
 
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         Anim = GetComponent<Animator>();
+
+        
+        if (uiManager == null)
+        {
+            Debug.LogError("ไม่ได้กำหนด UIManager ใน Inspector ของ Player!");
+        }
+
+        // อัปเดต UI เริ่มต้น
+        if (uiManager != null)
+        {
+            uiManager.UpdateKeyCounter(collectedKeys, totalKeys);
+        }
     }
 
     void Update()
@@ -71,8 +86,15 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Key"))
         {
             hasKey = true;
+            collectedKeys++; // เพิ่มจำนวนกุญแจที่เก็บได้
             Destroy(collision.gameObject);
             Debug.Log("เก็บกุญแจแล้ว!");
+
+            // อัปเดต UI แสดงจำนวนกุญแจ
+            if (uiManager != null)
+            {
+                uiManager.UpdateKeyCounter(collectedKeys, totalKeys);
+            }
         }
     }
 
@@ -86,7 +108,7 @@ public class Player : MonoBehaviour
         if (playerHealth <= 0)
         {
             Debug.Log("Player is dead!");
-            SceneManager.LoadScene("Ui_Lose"); 
+            SceneManager.LoadScene("Ui_Lose");
         }
     }
 }
