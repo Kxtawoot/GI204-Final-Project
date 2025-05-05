@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    float moveX;
     bool facingRight = true;
     public float speed = 5f;
     public float jumpForce = 200f;
     public bool isJumping = false;
     public Animator Anim;
-    private float moveInput;
     private Rigidbody2D rb2d;
-
+    public bool hasKey = false;
+    public int playerHealth = 100;
     public int maxJumpCount = 1;
     private int jumpCount = 0;
+    private float moveInput;
 
     void Start()
     {
@@ -23,10 +23,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         PlayerController();
-        moveInput = Input.GetAxis("Horizontal");
-
-        // เคลื่อนที่ซ้าย-ขวา
-        rb2d.linearVelocity = new Vector2(moveInput * speed, rb2d.linearVelocity.y);
 
         if (Input.GetButtonDown("Jump") && jumpCount < maxJumpCount)
         {
@@ -38,15 +34,15 @@ public class Player : MonoBehaviour
 
     void PlayerController()
     {
-        moveX = Input.GetAxisRaw("Horizontal");
-        rb2d.linearVelocity = new Vector2(moveX * speed, rb2d.linearVelocity.y);
-        Anim.SetBool("Run", moveX != 0);
+        moveInput = Input.GetAxisRaw("Horizontal");
+        rb2d.linearVelocity = new Vector2(moveInput * speed, rb2d.linearVelocity.y);
+        Anim.SetBool("Run", moveInput != 0);
 
-        if (moveX < 0 && facingRight)
+        if (moveInput < 0 && facingRight)
         {
             Flipplayer();
         }
-        else if (moveX > 0 && !facingRight)
+        else if (moveInput > 0 && !facingRight)
         {
             Flipplayer();
         }
@@ -66,6 +62,27 @@ public class Player : MonoBehaviour
         {
             isJumping = false;
             jumpCount = 0;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Key"))
+        {
+            hasKey = true;
+            Destroy(collision.gameObject);
+            Debug.Log("เก็บกุญแจแล้ว!");
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        playerHealth -= amount;
+        Debug.Log("Player took damage! HP: " + playerHealth);
+
+        if (playerHealth <= 0)
+        {
+            Debug.Log("Player is dead!");
         }
     }
 }
