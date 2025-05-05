@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Key
   - Background
+  - Slider
   layers:
   - Default
   - TransparentFX
