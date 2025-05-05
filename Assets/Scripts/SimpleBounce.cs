@@ -11,7 +11,7 @@ public class SimpleBounce : MonoBehaviour
             Rigidbody2D rb = other.gameObject.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.velocity = new Vector2(rb.velocity.x, 0); // à¤ÅÕÂÃì¤ÇÒÁàÃçÇá¹ÇµÑé§¡èÍ¹
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½é§¡ï¿½Í¹
                 rb.AddForce(Vector2.up * bouncePower, ForceMode2D.Impulse);
             }
         }
