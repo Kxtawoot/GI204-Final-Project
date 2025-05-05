@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Door : MonoBehaviour
             if (player != null && player.hasKey)
             {
                 Debug.Log("ชนะแล้ว!");
+                SceneManager.LoadScene("Ui_Win");
             }
             else
             {

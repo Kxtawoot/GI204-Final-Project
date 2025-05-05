@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
         if (playerHealth <= 0)
         {
             Debug.Log("Player is dead!");
-            SceneManager.LoadScene("GameOverScene"); // ← ชื่อซีนที่ต้องการแสดงเมื่อผู้เล่นตาย
+            SceneManager.LoadScene("Ui_Lose"); 
         }
     }
 }
