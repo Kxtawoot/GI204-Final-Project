@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public Animator Anim;
     private float moveInput;
     private Rigidbody2D rb2d;
+     public bool hasKey = false;
 
     public int maxJumpCount = 1;
     private int jumpCount = 0;
@@ -66,6 +67,16 @@ public class Player : MonoBehaviour
         {
             isJumping = false;
             jumpCount = 0;
+        }
+    }
+
+     void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Key"))
+        {
+            hasKey = true; // ได้กุญแจแล้ว
+            Destroy(collision.gameObject); // ลบกุญแจออกจากฉาก
+            Debug.Log("เก็บกุญแจเรียบร้อยแล้วเจ้าค่ะจอมมาร!");
         }
     }
 }
