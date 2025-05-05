@@ -6,11 +6,9 @@ public class Projectile2D : MonoBehaviour
     [SerializeField] private GameObject target;
     [SerializeField] private Rigidbody2D bulletPrefab;
 
-
-    void Update()
+  void Update()
     {
-        
-        if (Input.GetMouseButtonDown(0))
+       if (Input.GetMouseButtonDown(0))
         {
             // แปลงตำแหน่งเมาส์ในจอ เป็นตำแหน่งในโลก 2D
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -51,7 +49,5 @@ public class Projectile2D : MonoBehaviour
 
         return new Vector2(velocityX, velocityY);
     }//CalculateProjectileVelocity
-
-
 
 }//Projectile2D

@@ -1,36 +1,97 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-   public float speed = 5f;
+    bool facingRight = true;
+    public float speed = 5f;
     public float jumpForce = 200f;
     public bool isJumping = false;
-
-    private float moveInput;
+    public Animator Anim;
     private Rigidbody2D rb2d;
-
+    public bool hasKey = false;
+    public int playerHealth = 100;
+    public int maxJumpCount = 1;
+    private int jumpCount = 0;
+    private float moveInput;
+    private int collectedKeys = 0; 
+    public int totalKeys = 1; 
 
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-    }// Start
+        Anim = GetComponent<Animator>();
 
-    
+    }
+
     void Update()
     {
-        moveInput = Input.GetAxis("Horizontal");
+        PlayerController();
 
-        // เคลื่อนที่ซ้าย-ขวา
-        rb2d.linearVelocity = new Vector2(moveInput * speed, rb2d.linearVelocity.y);
-
-
-        if (Input.GetButtonDown("Jump") && !isJumping)
+        if (Input.GetButtonDown("Jump") && jumpCount < maxJumpCount)
         {
-            rb2d.AddForce(new Vector2(rb2d.linearVelocity.x, jumpForce));
+            rb2d.AddForce(new Vector2(0f, jumpForce));
+            jumpCount++;
+            isJumping = true;
+        }
+    }
 
-        }//Jump
+    void PlayerController()
+    {
+        moveInput = Input.GetAxisRaw("Horizontal");
+        rb2d.linearVelocity = new Vector2(moveInput * speed, rb2d.linearVelocity.y);
+        Anim.SetBool("Run", moveInput != 0);
 
-    }// Update
+        if (moveInput < 0 && facingRight)
+        {
+            Flipplayer();
+        }
+        else if (moveInput > 0 && !facingRight)
+        {
+            Flipplayer();
+        }
+    }
 
-}//PlayerMovement
+    void Flipplayer()
+    {
+        facingRight = !facingRight;
+        Vector3 localscale = transform.localScale;
+        localscale.x *= -1;
+        transform.localScale = localscale;
+    }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isJumping = false;
+            jumpCount = 0;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Key"))
+        {
+            hasKey = true;
+            collectedKeys++; // เพิ่มจำนวนกุญแจที่เก็บได้
+            Destroy(collision.gameObject);
+            Debug.Log("เก็บกุญแจแล้ว!");
+
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        playerHealth -= amount;
+        if (playerHealth < 0) playerHealth = 0;
+
+        Debug.Log("Player took damage! HP: " + playerHealth);
+
+        if (playerHealth <= 0)
+        {
+            Debug.Log("Player is dead!");
+            SceneManager.LoadScene("Ui_Lose");
+        }
+    }
+}

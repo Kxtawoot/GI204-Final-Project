@@ -3,27 +3,23 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public int damage = 5;
-    public float speed = 20f;
 
-    private Rigidbody2D rb;
-
-    void Start()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        rb.linearVelocity = transform.forward * speed;
+        // ให้กระสุนหายไปเองหลัง 5 วินาที
+        Destroy(gameObject, 5f);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Enemy enemy = other.GetComponent<Enemy>();
-        if (enemy != null)
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            enemy.TakeDamage(damage);
+            Enemy enemy = other.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
             Destroy(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject); // ชนกับสิ่งอื่นก็หาย
         }
     }
 }
