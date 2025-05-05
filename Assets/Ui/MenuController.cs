@@ -21,4 +21,13 @@ public class MenuController : MonoBehaviour
     {
         SceneManager.LoadScene("Ui_Start"); 
     }
+    public void Creditswin()
+    {
+        SceneManager.LoadScene("Credits win");
+    }
+    public void win()
+    {
+        SceneManager.LoadScene("Ui_Win");
+    }
+
 }
