@@ -34,5 +34,7 @@ public class AutoSlider : MonoBehaviour
 
         motor.motorSpeed = speed * direction;
         slider.motor = motor;
+        //สูตรการเคลื่อนที่แบบความเร็วคงที่
+        //สูตรแรงมอเตอร์ (Motor Force)
     }
 }
