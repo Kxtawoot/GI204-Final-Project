@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -78,11 +79,14 @@ public class Player : MonoBehaviour
     public void TakeDamage(int amount)
     {
         playerHealth -= amount;
+        if (playerHealth < 0) playerHealth = 0;
+
         Debug.Log("Player took damage! HP: " + playerHealth);
 
         if (playerHealth <= 0)
         {
             Debug.Log("Player is dead!");
+            SceneManager.LoadScene("GameOverScene"); // ← ชื่อซีนที่ต้องการแสดงเมื่อผู้เล่นตาย
         }
     }
 }
